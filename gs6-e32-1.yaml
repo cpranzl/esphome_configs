@@ -1,0 +1,48 @@
+esphome:
+  name: "gs6-e32-1"
+  friendly_name: GS6-E32-1
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "key"
+
+ota:
+  password: "password"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "GS6-E32-1 Fallback Hotspot"
+    password: "password"
+
+captive_portal:
+
+spi:
+  clk_pin: GPIO26
+  mosi_pin: GPIO22
+
+font:
+  - file: "8bit-dragon.ttf"
+    id: dragon
+    size: 6
+    
+display:
+  - platform: max7219digit
+    cs_pin: GPIO021
+    num_chips: 4
+    intensity: 15
+    lambda: |-
+      it.scroll(true, max7219digit::CONTINUOUS, 100, 5000, 1500);
+      it.print(0, 0, id(dragon), "GS6-E32-1!");
